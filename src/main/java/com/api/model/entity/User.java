@@ -33,12 +33,12 @@ public class User {
     @JoinColumn(name = "id_rol", nullable = false)
     private Rol rol;
 
-    @OneToMany(mappedBy = "id_user")
+    @OneToMany(mappedBy = "user")
     private Set<Event> events;
 
-    @OneToMany(mappedBy = "id_user")
+    @OneToMany(mappedBy = "user")
     private Set<Ticket> tickets;
 
-    @OneToMany(mappedBy = "id_user")
+    @OneToMany(mappedBy = "user")
     private Set<Attendance> attendances;
 }

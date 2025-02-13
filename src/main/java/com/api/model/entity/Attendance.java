@@ -1,5 +1,6 @@
 package com.api.model.entity;
 
+import com.api.model.composite.key.AttendanceId;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,6 +9,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "Attendance")
+@IdClass(AttendanceId.class)
 public class Attendance {
 
     @Id
