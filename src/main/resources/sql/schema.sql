@@ -2,23 +2,21 @@
 DROP TABLE IF EXISTS Attendance;
 DROP TABLE IF EXISTS Ticket;
 DROP TABLE IF EXISTS Event;
-DROP TABLE IF EXISTS "User";
-DROP TYPE IF EXISTS roles_enum;
+DROP TABLE IF EXISTS users;
 --DROP TABLE IF EXISTS Rol;
 
-CREATE TYPE roles_enum AS ENUM ('ROLE_ADMIN', 'ROLE_USER', 'ROLE_ORGANIZER');
 
-CREATE TABLE "User" (
+CREATE TABLE users (
  id_user BIGSERIAL,
- name VARCHAR(100),
- last_name VARCHAR(100),
+ name VARCHAR(100) NOT NULL,
+ last_name VARCHAR(100) NOT NULL,
  email VARCHAR(255) UNIQUE NOT NULL,
  password VARCHAR(255) NOT NULL,
- role roles_enum NOT NULL
+ role VARCHAR(100) NOT NULL
 );
 
 
-ALTER TABLE "User" ADD CONSTRAINT User_pkey PRIMARY KEY (id_user);
+ALTER TABLE users ADD CONSTRAINT User_pkey PRIMARY KEY (id_user);
 
 CREATE TABLE Event (
  id_Event BIGSERIAL,
@@ -55,8 +53,8 @@ CREATE TABLE Attendance (
 
 ALTER TABLE Attendance ADD CONSTRAINT Attendance_pkey PRIMARY KEY (id_Event);
 
-ALTER TABLE Event ADD CONSTRAINT Event_id_user_fkey FOREIGN KEY (id_user) REFERENCES "User"(id_user);
-ALTER TABLE Ticket ADD CONSTRAINT Ticket_id_user_fkey FOREIGN KEY (id_user) REFERENCES "User"(id_user);
+ALTER TABLE Event ADD CONSTRAINT Event_id_user_fkey FOREIGN KEY (id_user) REFERENCES users(id_user);
+ALTER TABLE Ticket ADD CONSTRAINT Ticket_id_user_fkey FOREIGN KEY (id_user) REFERENCES users(id_user);
 ALTER TABLE Ticket ADD CONSTRAINT Ticket_id_Event_fkey FOREIGN KEY (id_Event) REFERENCES Event(id_Event);
 ALTER TABLE Attendance ADD CONSTRAINT Attendance_id_Event_fkey FOREIGN KEY (id_Event) REFERENCES Event(id_Event);
-ALTER TABLE Attendance ADD CONSTRAINT Attendance_id_user_fkey FOREIGN KEY (id_user) REFERENCES "User"(id_user);
+ALTER TABLE Attendance ADD CONSTRAINT Attendance_id_user_fkey FOREIGN KEY (id_user) REFERENCES users(id_user);

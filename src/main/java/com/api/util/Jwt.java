@@ -23,8 +23,9 @@ public enum Jwt {
 
     public String getJWT(String id, String username, String issuer, Roles role){
         Dotenv dotenv = Dotenv.load();
-
-        LocalDateTime nowPlusValidity = LocalDateTime.now().plusHours(Long.getLong(dotenv.get("JWTExpirationInHours")));
+        String jwtExpirationInHoursStr = dotenv.get("JWTExpirationInHours");
+        long jwtExpirationInHours = Long.parseLong(jwtExpirationInHoursStr);
+        LocalDateTime nowPlusValidity = LocalDateTime.now().plusHours(jwtExpirationInHours);
         Date validity = Date.from(nowPlusValidity.atZone(ZoneId.systemDefault()).toInstant());
         Date now = Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant());
         return Jwts.builder()
@@ -35,7 +36,7 @@ public enum Jwt {
                 .issuer(issuer)
                 .claim(AUTHORITY_CLAIM_NAME, List.of(role))
                 .signWith(getKey())
-                .toString();
+                .compact();
     }
 
     public List<String> getRolesFromToken(String token) {

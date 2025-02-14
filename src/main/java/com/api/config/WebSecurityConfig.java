@@ -30,8 +30,9 @@ public class WebSecurityConfig {
                 // .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/v3/api-docs",
+                                "/auth/**",
                                 "/swagger-ui/**",
+                                "/v3/**",
                                 "/v3/api-docs/**",
                                 "/favicon.ico"
                         ).permitAll()

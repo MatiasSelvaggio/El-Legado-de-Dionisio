@@ -3,12 +3,13 @@ package com.api.model.entity;
 import com.api.util.Roles;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Set;
 
 @Entity
-@Table(name = "User")
+@Table(name = "users")
 @Getter
 @Setter
 public class User {
@@ -30,7 +31,7 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Enumerated(EnumType.STRING) // Map the enum to a string in the database
+    @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Roles role;
 
@@ -42,4 +43,15 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private Set<Attendance> attendances;
+
+    public User(Roles role, String password, String email, String lastName, String name) {
+        this.role = role;
+        this.password = password;
+        this.email = email;
+        this.lastName = lastName;
+        this.name = name;
+    }
+
+    public User() {
+    }
 }

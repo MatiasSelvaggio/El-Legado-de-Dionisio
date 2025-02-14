@@ -1,10 +1,10 @@
 -- data.sql
 
 -- Insert users
-INSERT INTO "User" (name, last_name, email, password, role)
+INSERT INTO users (name, last_name, email, password, role)
 VALUES ('John', 'Doe', 'john.doe@example.com', 'password123', 'ROLE_ADMIN');
 
-INSERT INTO "User" (name, last_name, email, password, role)
+INSERT INTO users (name, last_name, email, password, role)
 VALUES ('Jane', 'Smith', 'jane.smith@example.com', 'password123', 'ROLE_USER');
 
 -- Insert events
