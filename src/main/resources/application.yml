@@ -1,6 +1,9 @@
 server:
+  ssl:
+    enabled: false
   servlet:
     context-path: /api
+  port: 8080
 
 
 spring:
@@ -20,3 +23,6 @@ spring:
       mode: always
       schema-locations: classpath:sql/schema.sql
       data-locations: classpath:sql/data.sql
+
+url:
+  api: http://192.168.0.21:8080/api

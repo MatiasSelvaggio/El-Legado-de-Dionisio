@@ -1,5 +1,6 @@
 package com.api.model.entity;
 
+import com.api.util.Roles;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,9 +30,9 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @ManyToOne
-    @JoinColumn(name = "id_rol", nullable = false)
-    private Rol rol;
+    @Enumerated(EnumType.STRING) // Map the enum to a string in the database
+    @Column(name = "role", nullable = false)
+    private Roles role;
 
     @OneToMany(mappedBy = "user")
     private Set<Event> events;

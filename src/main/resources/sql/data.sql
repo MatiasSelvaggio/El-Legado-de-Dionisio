@@ -1,15 +1,11 @@
 -- data.sql
 
--- Insert roles
-INSERT INTO Rol (Type) VALUES (1); -- Admin
-INSERT INTO Rol (Type) VALUES (2); -- User
-
 -- Insert users
-INSERT INTO "User" (name, last_name, email, password, id_rol)
-VALUES ('John', 'Doe', 'john.doe@example.com', 'password123', 1);
+INSERT INTO "User" (name, last_name, email, password, role)
+VALUES ('John', 'Doe', 'john.doe@example.com', 'password123', 'ROLE_ADMIN');
 
-INSERT INTO "User" (name, last_name, email, password, id_rol)
-VALUES ('Jane', 'Smith', 'jane.smith@example.com', 'password123', 2);
+INSERT INTO "User" (name, last_name, email, password, role)
+VALUES ('Jane', 'Smith', 'jane.smith@example.com', 'password123', 'ROLE_USER');
 
 -- Insert events
 INSERT INTO Event (name, date_start, date_end, localidad, id_user, status, ticket_limit, tickets_sold)

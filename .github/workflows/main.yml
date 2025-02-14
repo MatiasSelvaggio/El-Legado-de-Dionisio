@@ -20,25 +20,25 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '21'
-          cache: 'maven'
+          cache: 'gradle' # Use Gradle caching instead of Maven
 
-      - name: Build with Maven
-        run: mvn clean package
+      - name: Build with Gradle
+        run: ./gradlew build
 
       - name: Run Unit Tests
-        run: mvn test --fail-at-end
+        run: ./gradlew test
 
       - name: Generate Test Report (HTML)
-        run: mvn surefire-report:report
+        run: ./gradlew testReport # Ensure you have a task named `testReport` in your build.gradle
 
       - name: Upload Test Results (XML)
         uses: actions/upload-artifact@v4
         with:
           name: test-results
-          path: target/surefire-reports/
+          path: build/test-results/test/ # Gradle stores test results here by default
 
       - name: Upload Test Report (HTML)
         uses: actions/upload-artifact@v4
         with:
           name: test-report-html
-          path: target/site/
+          path: build/reports/tests/test/ # Gradle stores HTML test reports here by default
