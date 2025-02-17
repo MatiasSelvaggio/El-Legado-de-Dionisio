@@ -41,9 +41,10 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ResponseDto> handleAccessDeniedException(AccessDeniedException e) {
+
         ResponseDto error = new ResponseDto(401, HttpStatus.UNAUTHORIZED.toString());
         return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
-    }
+      }
 
     @ExceptionHandler({
             HttpMessageNotReadableException.class, InvalidFormatException.class, DateTimeParseException.class,

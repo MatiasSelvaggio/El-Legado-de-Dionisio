@@ -33,7 +33,10 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         Optional.ofNullable(getTokenFromRequest(req))
                 .filter(jwtTokenUtil::validate)
                 .map(jwtTokenUtil::getUserDetails)
-                .ifPresentOrElse(dionisioUD -> setAuthenticationContext(req, dionisioUD), () -> proceedFilter(chain, req, resp));
+                .ifPresentOrElse(dionisioUD -> {
+                    setAuthenticationContext(req, dionisioUD);
+                    proceedFilter(chain, req, resp);
+                }, () -> proceedFilter(chain, req, resp));
     }
 
     private void setAuthenticationContext(HttpServletRequest req, DionisioUD dionisioUD) {

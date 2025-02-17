@@ -26,21 +26,10 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-        HttpSecurity httpSecurity = http.csrf(AbstractHttpConfigurer::disable)
-                // .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/auth/**",
-                                "/swagger-ui/**",
-                                "/v3/**",
-                                "/v3/api-docs/**",
-                                "/favicon.ico"
-                        ).permitAll()
-                        .anyRequest().authenticated()
-                )
+        http.csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(it -> it.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(it -> it.authenticationEntryPoint(
-                        ((request, response, authException) -> {
+                        (request, response, authException) -> {
                             response.setStatus(
                                     HttpServletResponse.SC_UNAUTHORIZED
                             );
@@ -50,17 +39,29 @@ public class WebSecurityConfig {
                                             "Unauthorized: You must send Bearer <JWT> in authorization header."))
                             );
                         }
-                        )
                 ).accessDeniedHandler(
                         ((request, response, accessDeniedException) -> {
-                            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                            response.setHeader("Content-type", "application/json");
+                            response.setStatus(
+                                    HttpServletResponse.SC_FORBIDDEN
+                            );
+                            response.setHeader("Content-Type", "application/json");
                             response.getWriter().println(
                                     JSON.stringify(new ResponseDto(HttpStatus.FORBIDDEN.value(),
-                                            "Forbidden: invalid Authorities"))
+                                            "Forbidden: Invalid Authorities"))
                             );
+                            response.getWriter().flush();
                         })
-                ));
+                ))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/auth/**",
+                                "/swagger-ui/**",
+                                "/v3/**",
+                                "/v3/api-docs/**",
+                                "/favicon.ico"
+                        ).permitAll()
+                        .anyRequest().authenticated()
+                );
         http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(new CorsFilter(), ChannelProcessingFilter.class);
         return http.build();

@@ -1,11 +1,10 @@
 package com.api.controller;
 
 import com.api.controller.swagger.AuthSwagger;
+import com.api.model.dto.LoginIn;
 import com.api.model.dto.RegisterUserIn;
 import com.api.model.dto.SessionOut;
-import com.api.service.AuthServiceImpl;
 import com.api.service.inter.AuthService;
-import com.api.service.inter.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,11 +19,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController implements AuthSwagger {
 
-    private final AuthServiceImpl authService;
+    private final AuthService authService;
 
     @PostMapping("/register")
     public ResponseEntity<SessionOut> registerUser(@Valid @RequestBody RegisterUserIn registerUserIn) {
 
         return new ResponseEntity<SessionOut>(this.authService.registerUser(registerUserIn), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<SessionOut> loginUser(LoginIn loginIn) {
+
+        return new ResponseEntity<SessionOut>(this.authService.loginUser(loginIn), HttpStatus.OK);
     }
 }

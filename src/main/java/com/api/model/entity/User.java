@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -31,9 +32,15 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "created", nullable = false)
+    private LocalDateTime created;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Roles role;
+
+    @Column(name = "deleted")
+    private LocalDateTime deleted;
 
     @OneToMany(mappedBy = "user")
     private Set<Event> events;
@@ -50,6 +57,7 @@ public class User {
         this.email = email;
         this.lastName = lastName;
         this.name = name;
+        this.created = LocalDateTime.now();
     }
 
     public User() {

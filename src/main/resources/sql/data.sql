@@ -1,11 +1,11 @@
 -- data.sql
 
 -- Insert users
-INSERT INTO users (name, last_name, email, password, role)
-VALUES ('John', 'Doe', 'john.doe@example.com', 'password123', 'ROLE_ADMIN');
+INSERT INTO users (name, last_name, email, password, role, created)
+VALUES ('John', 'Doe', 'john.doe@example.com', 'password123', 'ROLE_ADMIN', '1997-05-28 17:00:00');
 
-INSERT INTO users (name, last_name, email, password, role)
-VALUES ('Jane', 'Smith', 'jane.smith@example.com', 'password123', 'ROLE_USER');
+INSERT INTO users (name, last_name, email, password, role, created)
+VALUES ('Jane', 'Smith', 'jane.smith@example.com', 'password123', 'ROLE_USER', '1997-05-28 17:00:00');
 
 -- Insert events
 INSERT INTO Event (name, date_start, date_end, localidad, id_user, status, ticket_limit, tickets_sold)

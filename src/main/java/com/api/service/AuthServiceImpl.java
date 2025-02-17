@@ -1,6 +1,7 @@
 package com.api.service;
 
 import com.api.exception.ApiException;
+import com.api.model.dto.LoginIn;
 import com.api.model.dto.RegisterUserIn;
 import com.api.model.dto.SessionOut;
 import com.api.model.entity.User;
@@ -31,10 +32,23 @@ public class AuthServiceImpl implements AuthService {
             throw new ApiException(HttpStatus.CONFLICT, "Email is already in use");
         }
 
+        // TODO: update to use Crypt in password
+
         User user = new User(Roles.ROLE_USER, input.getPassword(), input.getEmail(), input.getName(), input.getLastName());
         user = this.userRepository.save(user);
 
         return generateSession(user, "Success in create user");
+    }
+
+
+    public SessionOut loginUser(LoginIn input) {
+        // TODO: update to use Crypt in password
+        return this.userRepository.findByEmail(input.getEmail()).filter(user -> user.getPassword().equals(input.getPassword()) )
+                .map(user -> generateSession(user, "Login Success"))
+                .orElseThrow(
+                () -> new ApiException(HttpStatus.NOT_FOUND, "User with that mail not found")
+        );
+
     }
 
 
