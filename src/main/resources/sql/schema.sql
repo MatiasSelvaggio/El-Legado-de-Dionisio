@@ -25,11 +25,13 @@ CREATE TABLE Event (
  name VARCHAR(100),
  date_start TIMESTAMP,
  date_end TIMESTAMP,
- localidad VARCHAR(255),
+ place VARCHAR(255),
  id_user INTEGER,
- status INTEGER,
+ status VARCHAR(255),
  ticket_limit INTEGER,
- tickets_sold INTEGER
+ tickets_sold INTEGER,
+ created TIMESTAMP NOT NULL,
+ deleted TIMESTAMP
 );
 
 

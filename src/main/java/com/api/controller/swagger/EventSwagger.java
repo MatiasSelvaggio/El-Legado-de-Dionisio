@@ -1,30 +1,26 @@
 package com.api.controller.swagger;
 
-import com.api.model.dto.ResponseDto;
-import com.api.model.dto.UpdateUserIn;
-import com.api.model.dto.UserOut;
+import com.api.config.DionisioUD;
+import com.api.model.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
-@Tag(name = "User", description = "UserController")
-public interface UserSwagger {
+@Tag(name = "Event", description = "EventController")
+public interface EventSwagger {
 
-    @Operation(summary = "Get User By Id",
+    @Operation(summary = "create event",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = UserOut.class)
+                                    schema = @Schema(implementation = EventOut.class)
                             )
                     ),
                     @ApiResponse(
@@ -45,15 +41,15 @@ public interface UserSwagger {
                     ),
             }
     )
-    ResponseEntity<UserOut> getUserById(Long userId);
+    ResponseEntity<EventOut> createEvent(EventIn eventIn, DionisioUD dionisioUD);
 
-    @Operation(summary = "Get all user",
+    @Operation(summary = "Get list of event",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
                             content = @Content(
                                     mediaType = "application/json",
-                                    array = @ArraySchema(schema = @Schema(implementation = UserOut.class))
+                                    schema = @Schema(implementation = EventOut.class)
                             )
                     ),
                     @ApiResponse(
@@ -74,15 +70,15 @@ public interface UserSwagger {
                     ),
             }
     )
-    ResponseEntity<List<UserOut>> getAllUsers();
+    ResponseEntity<List<EventOut>> getAvailableEvent();
 
-    @Operation(summary = "Update user by id",
+    @Operation(summary = "Get event By Id",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = UserOut.class)
+                                    schema = @Schema(implementation = EventOut.class)
                             )
                     ),
                     @ApiResponse(
@@ -103,15 +99,15 @@ public interface UserSwagger {
                     ),
             }
     )
-    ResponseEntity<UserOut> updateUser(Long userId, UpdateUserIn user);
+    ResponseEntity<EventOut> getEventById(Long idEvent);
 
-    @Operation(summary = "Delete user by id",
+    @Operation(summary = "Update event By Id",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = ResponseEntity.class)
+                                    schema = @Schema(implementation = EventOut.class)
                             )
                     ),
                     @ApiResponse(
@@ -132,15 +128,15 @@ public interface UserSwagger {
                     ),
             }
     )
-    ResponseEntity<Void> deleteUser(Long userId);
+    ResponseEntity<EventOut> updateEventById(Long idEvent, EventUpdateIn input, DionisioUD dionisioUD);
 
-    @Operation(summary = "Get roles",
+    @Operation(summary = "delete event By Id",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
                             content = @Content(
                                     mediaType = "application/json",
-                                    array = @ArraySchema(schema = @Schema(implementation = String.class))
+                                    schema = @Schema(implementation = EventOut.class)
                             )
                     ),
                     @ApiResponse(
@@ -161,34 +157,5 @@ public interface UserSwagger {
                     ),
             }
     )
-    ResponseEntity<List<String>> getRoles();
-
-    @Operation(summary = "Update user rol",
-            responses = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = UserOut.class)
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "Input validation error",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = ResponseDto.class)
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "401",
-                            description = "Unauthorized",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = ResponseDto.class)
-                            )
-                    ),
-            }
-    )
-    ResponseEntity<UserOut> updateRolUser(@PathVariable("userId") Long userId, @Param("rol") String rol);
+    ResponseEntity<Void> deleteEventById(Long idEvent, DionisioUD dionisioUD);
 }
