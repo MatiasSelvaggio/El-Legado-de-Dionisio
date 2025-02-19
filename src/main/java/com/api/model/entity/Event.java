@@ -42,6 +42,9 @@ public class Event {
     @Column(name = "created", nullable = false)
     private LocalDateTime created;
 
+    @Column(name = "ticket_price")
+    private Double ticketPrice;
+
     @Column(name = "ticket_limit")
     private Integer ticketLimit;
 
@@ -58,9 +61,10 @@ public class Event {
     private Set<Attendance> attendances;
 
 
-    public Event(Integer ticketLimit, String status, User user, String place, LocalDateTime dateStart, LocalDateTime dateEnd, String name) {
+    public Event(Integer ticketLimit, Double ticketPrice,String status, User user, String place, LocalDateTime dateStart, LocalDateTime dateEnd, String name) {
         this.ticketsSold = 0;
         this.ticketLimit = ticketLimit;
+        this.ticketPrice = ticketPrice;
         this.status = status;
         this.user = user;
         this.place = place;

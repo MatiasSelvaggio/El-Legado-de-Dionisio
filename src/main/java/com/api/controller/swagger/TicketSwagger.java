@@ -12,16 +12,16 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
-@Tag(name = "Event", description = "EventController")
-public interface EventSwagger {
+@Tag(name = "Ticket", description = "TicketController")
+public interface TicketSwagger {
 
-    @Operation(summary = "create event",
+    @Operation(summary = "Buy ticket",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = EventOut.class)
+                                    schema = @Schema(implementation = TicketOut.class)
                             )
                     ),
                     @ApiResponse(
@@ -42,15 +42,15 @@ public interface EventSwagger {
                     ),
             }
     )
-    ResponseEntity<EventOut> createEvent(EventIn eventIn, DionisioUD dionisioUD);
+    ResponseEntity<byte[]> buyTicket(TicketIn ticketIn, DionisioUD dionisioUD);
 
-    @Operation(summary = "Get list of event",
+    @Operation(summary = "Buy ticket",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
                             content = @Content(
                                     mediaType = "application/json",
-                                    array = @ArraySchema(schema = @Schema(implementation = EventOut.class))
+                                    array = @ArraySchema(schema = @Schema(implementation = TicketOut.FormatOut.class))
                             )
                     ),
                     @ApiResponse(
@@ -71,15 +71,15 @@ public interface EventSwagger {
                     ),
             }
     )
-    ResponseEntity<List<EventOut>> getAvailableEvent();
+    ResponseEntity<List<TicketOut.FormatOut>> getMyTickets(DionisioUD dionisioUD);
 
-    @Operation(summary = "Get event By Id",
+    @Operation(summary = "Buy ticket",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = EventOut.class)
+                                    array = @ArraySchema(schema = @Schema(implementation = TicketOut.FormatOut.class))
                             )
                     ),
                     @ApiResponse(
@@ -100,63 +100,7 @@ public interface EventSwagger {
                     ),
             }
     )
-    ResponseEntity<EventOut> getEventById(Long idEvent);
+    ResponseEntity<List<TicketOut.FormatOut>> getAllTickets();
 
-    @Operation(summary = "Update event By Id",
-            responses = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = EventOut.class)
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "Input validation error",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = ResponseDto.class)
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "401",
-                            description = "Unauthorized",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = ResponseDto.class)
-                            )
-                    ),
-            }
-    )
-    ResponseEntity<EventOut> updateEventById(Long idEvent, EventUpdateIn input, DionisioUD dionisioUD);
 
-    @Operation(summary = "delete event By Id",
-            responses = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = EventOut.class)
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "Input validation error",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = ResponseDto.class)
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "401",
-                            description = "Unauthorized",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = ResponseDto.class)
-                            )
-                    ),
-            }
-    )
-    ResponseEntity<Void> deleteEventById(Long idEvent, DionisioUD dionisioUD);
 }

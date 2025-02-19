@@ -2,12 +2,14 @@ package com.api.model.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "Ticket")
+@NoArgsConstructor
 public class Ticket {
 
     @Id
@@ -24,9 +26,16 @@ public class Ticket {
     private Event event;
 
     @Column(name = "value", nullable = false)
-    private Integer value;
+    private Double value;
 
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
+
+    public Ticket(User user, Event event, Double value, Integer quantity) {
+        this.user = user;
+        this.event = event;
+        this.value = value;
+        this.quantity = quantity;
+    }
 }

@@ -15,7 +15,10 @@ public class EventIn {
     private Long ownerId;
 
     @Min(10)
-    private Integer ticket_limit;
+    private Integer ticketLimit;
+
+    @NotNull(message = "you must send ticketPrice")
+    private Double ticketPrice;
 
     @NotBlank(message = "you must send status")
     private String status;

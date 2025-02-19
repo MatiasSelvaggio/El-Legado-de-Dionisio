@@ -30,6 +30,7 @@ CREATE TABLE Event (
  status VARCHAR(255),
  ticket_limit INTEGER,
  tickets_sold INTEGER,
+ ticket_price FLOAT,
  created TIMESTAMP NOT NULL,
  deleted TIMESTAMP
 );
@@ -41,7 +42,7 @@ CREATE TABLE Ticket (
  id_ticket BIGSERIAL,
  id_user INTEGER,
  id_Event INTEGER,
- value INTEGER,
+ value FLOAT,
  quantity INTEGER
 );
 

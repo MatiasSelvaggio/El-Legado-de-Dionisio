@@ -34,12 +34,10 @@ public class EventServiceImpl implements EventService {
                     return new EventOut(this.eventRepository.save(event));
                 }
                 case ROLE_ORGANIZER -> {
-                    Event event = new Event(eventIn.getTicket_limit(), eventIn.getStatus(), user, eventIn.getAddress(), eventIn.getDateStart(), eventIn.getDateEnd(), eventIn.getName());
+                    Event event = new Event(eventIn.getTicketLimit(), eventIn.getTicketPrice(),eventIn.getStatus(), user, eventIn.getAddress(), eventIn.getDateStart(), eventIn.getDateEnd(), eventIn.getName());
                     return new EventOut(this.eventRepository.save(event));
                 }
-                case null, default -> {
-                    throw new ApiException(HttpStatus.BAD_REQUEST, "user must be organizer");
-                }
+                case null, default -> throw new ApiException(HttpStatus.BAD_REQUEST, "user must be organizer");
             }
         }).orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "user not found"));
 
@@ -55,7 +53,7 @@ public class EventServiceImpl implements EventService {
         if (ownerUser.getRole().equals(Roles.ROLE_ORGANIZER))
             throw new ApiException(HttpStatus.BAD_REQUEST, "owner user must be organizer");
 
-        return new Event(eventIn.getTicket_limit(), eventIn.getStatus(), ownerUser, eventIn.getAddress(), eventIn.getDateStart(), eventIn.getDateEnd(), eventIn.getName());
+        return new Event(eventIn.getTicketLimit(), eventIn.getTicketPrice(), eventIn.getStatus(), ownerUser, eventIn.getAddress(), eventIn.getDateStart(), eventIn.getDateEnd(), eventIn.getName());
     }
 
     public List<EventOut> getAvailableEvent() {
