@@ -16,29 +16,32 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set Up JDK 21
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '21'
-          cache: 'gradle' # Use Gradle caching instead of Maven
+          cache: 'maven'
+
+      - name: Grant execute permission to gradlew
+        run: chmod +x gradlew
 
       - name: Build with Gradle
         run: ./gradlew build
 
       - name: Run Unit Tests
-        run: ./gradlew test
+        run: ./gradlew test --fail-at-end
 
       - name: Generate Test Report (HTML)
-        run: ./gradlew testReport # Ensure you have a task named `testReport` in your build.gradle
+        run: ./gradlew surefire-report:report
 
       - name: Upload Test Results (XML)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: test-results
-          path: build/test-results/test/ # Gradle stores test results here by default
+          path: build/test-results/
 
       - name: Upload Test Report (HTML)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: test-report-html
-          path: build/reports/tests/test/ # Gradle stores HTML test reports here by default
+          path: build/reports/tests/
