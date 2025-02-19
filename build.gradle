@@ -51,3 +51,8 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+tasks.register('testReport', TestReport) {
+	destinationDirectory = file("$destinationDirectory/reports/tests/test")
+	testResults.from(test)
+}
