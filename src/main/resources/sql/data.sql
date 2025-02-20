@@ -15,15 +15,15 @@ INSERT INTO Event (name, date_start, date_end, place, id_user, status, ticket_li
 VALUES ('Conference', '2023-11-15 09:00:00', '2023-11-15 17:00:00', 'San Francisco', 2, '1', 500, 250,  250.99,'1997-05-28 17:00:00');
 
 -- Insert tickets
-INSERT INTO Ticket (id_user, id_Event, value, quantity)
-VALUES (1, 1, 200.20, 2);
+INSERT INTO Ticket (id_user, id_event, value, code, quantity)
+VALUES (1, 1, 200.20, 'SODASCASDO', 2);
 
-INSERT INTO Ticket (id_user, id_Event, value, quantity)
-VALUES (2, 2, 250.99, 1);
+INSERT INTO Ticket (id_user, id_event, value, code, quantity)
+VALUES (2, 2, 250.99, 'SODASC2ASDO', 1);
 
 -- Insert attendances
-INSERT INTO Attendance (id_Event, id_user, status)
+INSERT INTO Attendance (id_event, id_user, status)
 VALUES (1, 1, 'Confirmed');
 
-INSERT INTO Attendance (id_Event, id_user, status)
+INSERT INTO Attendance (id_event, id_user, status)
 VALUES (2, 2, 'Pending');

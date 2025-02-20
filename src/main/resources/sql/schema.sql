@@ -21,7 +21,7 @@ CREATE TABLE users (
 ALTER TABLE users ADD CONSTRAINT User_pkey PRIMARY KEY (id_user);
 
 CREATE TABLE Event (
- id_Event BIGSERIAL,
+ id_event BIGSERIAL,
  name VARCHAR(100),
  date_start TIMESTAMP,
  date_end TIMESTAMP,
@@ -36,30 +36,30 @@ CREATE TABLE Event (
 );
 
 
-ALTER TABLE Event ADD CONSTRAINT Event_pkey PRIMARY KEY (id_Event);
+ALTER TABLE Event ADD CONSTRAINT Event_pkey PRIMARY KEY (id_event);
 
 CREATE TABLE Ticket (
- id_ticket BIGSERIAL,
- id_user INTEGER,
- id_Event INTEGER,
- value FLOAT,
- quantity INTEGER
+ id_ticket BIGSERIAL NOT NULL,
+ id_user INTEGER NOT NULL,
+ id_event INTEGER NOT NULL,
+ value FLOAT NOT NULL,
+ code VARCHAR(255) NOT NULL,
+ quantity INTEGER NOT NULL
 );
 
 
 ALTER TABLE Ticket ADD CONSTRAINT Ticket_pkey PRIMARY KEY (id_ticket);
 
 CREATE TABLE Attendance (
- id_Event INTEGER,
+ id_event INTEGER,
  id_user INTEGER,
- status VARCHAR(100)
+ status VARCHAR(100),
+ PRIMARY KEY (id_event, id_user)
 );
 
 
-ALTER TABLE Attendance ADD CONSTRAINT Attendance_pkey PRIMARY KEY (id_Event);
-
 ALTER TABLE Event ADD CONSTRAINT Event_id_user_fkey FOREIGN KEY (id_user) REFERENCES users(id_user);
 ALTER TABLE Ticket ADD CONSTRAINT Ticket_id_user_fkey FOREIGN KEY (id_user) REFERENCES users(id_user);
-ALTER TABLE Ticket ADD CONSTRAINT Ticket_id_Event_fkey FOREIGN KEY (id_Event) REFERENCES Event(id_Event);
-ALTER TABLE Attendance ADD CONSTRAINT Attendance_id_Event_fkey FOREIGN KEY (id_Event) REFERENCES Event(id_Event);
+ALTER TABLE Ticket ADD CONSTRAINT Ticket_id_Event_fkey FOREIGN KEY (id_event) REFERENCES Event(id_event);
+ALTER TABLE Attendance ADD CONSTRAINT Attendance_id_Event_fkey FOREIGN KEY (id_event) REFERENCES Event(id_event);
 ALTER TABLE Attendance ADD CONSTRAINT Attendance_id_user_fkey FOREIGN KEY (id_user) REFERENCES users(id_user);

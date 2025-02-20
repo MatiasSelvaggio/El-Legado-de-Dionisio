@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @Entity
@@ -31,11 +33,15 @@ public class Ticket {
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
+    @Column(name = "code", nullable = false)
+    private String code;
+
 
     public Ticket(User user, Event event, Double value, Integer quantity) {
         this.user = user;
         this.event = event;
         this.value = value;
         this.quantity = quantity;
+        this.code = UUID.randomUUID().toString();
     }
 }

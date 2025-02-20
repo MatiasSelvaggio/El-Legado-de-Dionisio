@@ -8,21 +8,20 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
-@Tag(name = "Ticket", description = "TicketController")
-public interface TicketSwagger {
+@Tag(name = "Attendance", description = "AttendanceController")
+public interface AttendanceSwagger {
 
-    @Operation(summary = "Buy ticket",
+    @Operation(summary = "validate Attendance",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
                             content = @Content(
-                                    mediaType = MediaType.IMAGE_PNG_VALUE,
-                                    array = @ArraySchema(schema = @Schema(implementation = byte.class))
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ValidateOut.class)
                             )
                     ),
                     @ApiResponse(
@@ -43,15 +42,15 @@ public interface TicketSwagger {
                     ),
             }
     )
-    ResponseEntity<byte[]> buyTicket(TicketIn ticketIn, DionisioUD dionisioUD);
+    ResponseEntity<ValidateOut> validateAttendance(AttendanceIn attendanceIn, DionisioUD dionisioUD);
 
-    @Operation(summary = "Buy ticket",
+    @Operation(summary = "Get all Attendance from a event ",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
                             content = @Content(
                                     mediaType = "application/json",
-                                    array = @ArraySchema(schema = @Schema(implementation = TicketOut.FormatOut.class))
+                                    array = @ArraySchema(schema = @Schema(implementation = AttendanceOut.class))
                             )
                     ),
                     @ApiResponse(
@@ -72,36 +71,5 @@ public interface TicketSwagger {
                     ),
             }
     )
-    ResponseEntity<List<TicketOut.FormatOut>> getMyTickets(DionisioUD dionisioUD);
-
-    @Operation(summary = "Buy ticket",
-            responses = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    array = @ArraySchema(schema = @Schema(implementation = TicketOut.FormatOut.class))
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "Input validation error",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = ResponseDto.class)
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "401",
-                            description = "Unauthorized",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = ResponseDto.class)
-                            )
-                    ),
-            }
-    )
-    ResponseEntity<List<TicketOut.FormatOut>> getAllTickets();
-
-
+    ResponseEntity<List<AttendanceOut>> getAttendanceFromIdEvent(Long idEvent, DionisioUD dionisioUD);
 }

@@ -25,6 +25,7 @@ public class TicketOut {
     @Setter
     public static class FormatOut {
         private Long idTicket;
+        private String code;
         private Integer quantity;
         @JsonFormat(pattern = "yyyy-MM-dd")
         private LocalDateTime startEvent;
@@ -36,6 +37,7 @@ public class TicketOut {
 
         public FormatOut(Ticket ticket) {
             this.idTicket = ticket.getIdTicket();
+            this.code = ticket.getCode();
             this.quantity = ticket.getQuantity();
             this.endEvent = ticket.getEvent().getDateEnd();
             this.startEvent = ticket.getEvent().getDateStart();

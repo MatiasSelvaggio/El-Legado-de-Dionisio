@@ -3,6 +3,7 @@ package com.api.model.dto;
 
 import com.api.model.entity.User;
 import com.api.util.Roles;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,8 +23,10 @@ public class UserOut {
 
     private Roles rol;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime created;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime deleted;
 
     public UserOut() {}

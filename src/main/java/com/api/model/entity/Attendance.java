@@ -3,6 +3,7 @@ package com.api.model.entity;
 import com.api.model.composite.key.AttendanceId;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
@@ -10,6 +11,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "Attendance")
 @IdClass(AttendanceId.class)
+@NoArgsConstructor
 public class Attendance {
 
     @Id
@@ -24,4 +26,11 @@ public class Attendance {
 
     @Column(name = "status", nullable = false)
     private String status;
+
+
+    public Attendance(Event event, User user, String status) {
+        this.event = event;
+        this.user = user;
+        this.status = status;
+    }
 }
