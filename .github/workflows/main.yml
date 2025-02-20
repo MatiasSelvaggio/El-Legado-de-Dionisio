@@ -16,29 +16,32 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set Up JDK 21
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '21'
-          cache: 'maven'
+          cache: 'gradle'
 
-      - name: Build with Maven
-        run: mvn clean package
+      - name: Grant execute permission to gradlew
+        run: chmod +x gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew build
 
       - name: Run Unit Tests
-        run: mvn test --fail-at-end
+        run: ./gradlew test --fail-at-end
 
       - name: Generate Test Report (HTML)
-        run: mvn surefire-report:report
+        run: ./gradlew surefire-report:report
 
       - name: Upload Test Results (XML)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: test-results
-          path: target/surefire-reports/
+          path: build/test-results/
 
       - name: Upload Test Report (HTML)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: test-report-html
-          path: target/site/
+          path: build/reports/tests/
