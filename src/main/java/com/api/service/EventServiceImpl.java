@@ -4,14 +4,19 @@ import com.api.exception.ApiException;
 import com.api.model.dto.EventIn;
 import com.api.model.dto.EventOut;
 import com.api.model.dto.EventUpdateIn;
+import com.api.model.dto.PageResponseDto;
 import com.api.model.entity.Event;
 import com.api.model.entity.User;
 import com.api.repository.EventRepository;
 import com.api.repository.UserRepository;
+import com.api.repository.specification.QuerySpecification;
 import com.api.service.inter.EventService;
 import com.api.util.Roles;
 import com.api.util.Validator;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -56,8 +61,11 @@ public class EventServiceImpl implements EventService {
         return new Event(eventIn.getTicketLimit(), eventIn.getTicketPrice(), eventIn.getStatus(), ownerUser, eventIn.getAddress(), eventIn.getDateStart(), eventIn.getDateEnd(), eventIn.getName());
     }
 
-    public List<EventOut> getAvailableEvent() {
-        return this.eventRepository.findAll().stream().map(EventOut::new).toList();
+    public PageResponseDto<EventOut> getAvailableEvent(Pageable pageable, String search) {
+        Specification<Event> spec = QuerySpecification.searchEventByIdEventOrNameOrPlaceOrDateStartOrDateEndOrStatusOrCreatedOrTicketPriceOrTicketLimitOrTicketSold(search);
+        Page<Event> page = this.eventRepository.findAll(spec, pageable);
+        List<EventOut> eventOutList = page.getContent().stream().map(EventOut::new).toList();
+        return new PageResponseDto<EventOut>(page.getTotalElements(), page.getTotalPages(), eventOutList);
     }
 
     public EventOut getEventById(Long idEvent) {

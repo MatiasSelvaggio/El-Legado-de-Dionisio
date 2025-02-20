@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 
-import java.util.List;
 
 @Tag(name = "Event", description = "EventController")
 public interface EventSwagger {
@@ -71,7 +70,7 @@ public interface EventSwagger {
                     ),
             }
     )
-    ResponseEntity<List<EventOut>> getAvailableEvent();
+    ResponseEntity<PageResponseDto<EventOut>> getAvailableEvent(int page, int size, String sortName, String sort, String search);
 
     @Operation(summary = "Get event By Id",
             responses = {
