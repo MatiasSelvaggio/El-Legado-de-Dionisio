@@ -1,6 +1,5 @@
 package com.api.util;
 
-import io.github.cdimascio.dotenv.Dotenv;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -21,9 +20,7 @@ public enum Jwt {
 
     public final static String AUTHORITY_CLAIM_NAME = "xRoles";
 
-    public String getJWT(String id, String username, String issuer, Roles role){
-        Dotenv dotenv = Dotenv.load();
-        String jwtExpirationInHoursStr = dotenv.get("JWTExpirationInHours");
+    public String getJWT(String id, String username, String issuer, String jwtExpirationInHoursStr, Roles role){
         long jwtExpirationInHours = Long.parseLong(jwtExpirationInHoursStr);
         LocalDateTime nowPlusValidity = LocalDateTime.now().plusHours(jwtExpirationInHours);
         Date validity = Date.from(nowPlusValidity.atZone(ZoneId.systemDefault()).toInstant());
@@ -61,10 +58,19 @@ public enum Jwt {
         ) : new ArrayList<>();
     }
 
-    public static SecretKey getKey() {
-        Dotenv dotenv = Dotenv.load();
-        return Keys.hmacShaKeyFor(dotenv.get("JWTSecret").getBytes());
+    private static String jwtSecret;
+
+    public static void setJwtSecret(String secret) {
+        jwtSecret = secret;
     }
+
+    public static SecretKey getKey() {
+        if (jwtSecret == null) {
+            throw new IllegalStateException("JWT secret key is not initialized.");
+        }
+        return Keys.hmacShaKeyFor(jwtSecret.getBytes());
+    }
+
 
     private Jws<Claims> parseToken(String token) {
         return Jwts.parser()

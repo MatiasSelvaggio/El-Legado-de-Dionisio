@@ -1,9 +1,9 @@
 package com.api.config;
 
 import com.api.util.Jwt;
-import io.github.cdimascio.dotenv.Dotenv;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.Serial;
@@ -18,6 +18,12 @@ public class JwtTokenUtil implements Serializable {
     @Serial
     private static final long serialVersionUID = -23871239876592L;
 
+    private final String userIssuer;
+
+    public JwtTokenUtil(@Value("${jwt.issuer.user}")String userIssuer) {
+        this.userIssuer = userIssuer;
+    }
+
     public String getUserNameFromToken(String token) {
         final Claims claims = getClaimsFromToken(token);
         return claims != null ? claims.getSubject() : null;
@@ -25,10 +31,8 @@ public class JwtTokenUtil implements Serializable {
 
     private Claims getClaimsFromToken(String token) {
         try {
-            Dotenv dotenv = Dotenv.load();
-
             return Jwts.parser().verifyWith(getKey())
-                    .requireIssuer(dotenv.get("BackofficeIssuer"))
+                    .requireIssuer(userIssuer)
                     .build().parseSignedClaims(token).getPayload();
 
         } catch (Exception e) {

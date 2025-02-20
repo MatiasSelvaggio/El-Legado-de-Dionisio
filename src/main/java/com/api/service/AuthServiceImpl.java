@@ -9,8 +9,8 @@ import com.api.repository.UserRepository;
 import com.api.service.inter.AuthService;
 import com.api.util.Jwt;
 import com.api.util.Roles;
-import io.github.cdimascio.dotenv.Dotenv;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -20,10 +20,22 @@ import java.util.Date;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    private final String jwtExpirationInHoursStr;
+    private final String userIssuer;
+
+    @Autowired
+    public AuthServiceImpl(UserRepository userRepository,
+                           @Value("${jwt.expiration}") String jwtExpirationInHoursStr,
+                           @Value("${jwt.issuer.user}") String userIssuer) {
+
+        this.userRepository = userRepository;
+        this.jwtExpirationInHoursStr = jwtExpirationInHoursStr;
+        this.userIssuer = userIssuer;
+    }
 
     public SessionOut registerUser(RegisterUserIn input) {
         Optional<User> userOptional = this.userRepository.findByEmail(input.getEmail());
@@ -53,13 +65,13 @@ public class AuthServiceImpl implements AuthService {
 
 
     private SessionOut generateSession(User user, String message) {
-        Dotenv dotenv = Dotenv.load();
-        String jwtExpirationInHoursStr = dotenv.get("JWTExpirationInHours");
         long jwtExpirationInHours = Long.parseLong(jwtExpirationInHoursStr);
         String jwt = Jwt.INSTANCE.getJWT(
                 user.getIdUser().toString(),
                 user.getEmail(),
-                dotenv.get("UserIssuer"),
+                userIssuer,
+                jwtExpirationInHoursStr
+                ,
                 user.getRole());
         Long expiration =  Date.from(LocalDateTime.now().plusHours(jwtExpirationInHours)
                 .atZone(ZoneId.systemDefault()).toInstant()).getTime();

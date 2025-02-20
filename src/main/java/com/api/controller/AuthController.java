@@ -28,7 +28,7 @@ public class AuthController implements AuthSwagger {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<SessionOut> loginUser(LoginIn loginIn) {
+    public ResponseEntity<SessionOut> loginUser(@Valid @RequestBody LoginIn loginIn) {
 
         return new ResponseEntity<SessionOut>(this.authService.loginUser(loginIn), HttpStatus.OK);
     }
